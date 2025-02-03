@@ -1,8 +1,6 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { validateUserSignup } from "../validators/userValidator.js";
-import jwt from "jsonwebtoken";
-
 
 const userSignup = async (req, res) => {
     const validateResult = validateUserSignup(req.body);
@@ -38,14 +36,9 @@ const userSignup = async (req, res) => {
             lastName
         });
 
-        const token = jwt.sign({
-            userId: newUser._id
-        }, process.env.USER_JWT_SECRET);
-
-
         return res.status(200).json({
             message: "User created successfully",
-            token
+
         });
 
     } catch (err) {
