@@ -1,6 +1,5 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import mongoose from "mongoose";
 import userModel from "../models/user.model.js";
 
 const updateBody = z.object({
