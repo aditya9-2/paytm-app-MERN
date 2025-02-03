@@ -2,7 +2,7 @@ import { Router } from "express";
 import userSignup from "../controllers/userSignup.controller.js";
 import userSignin from "../controllers/userSignin.controller.js";
 import updateUserInformation from "../controllers/updateUserInformation.controller.js";
-import userAuthToken from "../middlewares/userAuth.Middleware.js";
+import userAuthToken from "../middlewares/userAuthMiddleware.js";
 
 const router = new Router();
 
