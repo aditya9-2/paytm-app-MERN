@@ -1,9 +1,9 @@
 import { Router } from "express";
-import userSignup from "../controllers/userSignup.controller.js";
-import userSignin from "../controllers/userSignin.controller.js";
-import updateUserInformation from "../controllers/updateUserInformation.controller.js";
+import userSignup from "../controllers/user/userSignup.controller.js";
+import userSignin from "../controllers/user/userSignin.controller.js";
+import updateUserInformation from "../controllers/user/updateUserInformation.controller.js";
 import userAuthToken from "../middlewares/userAuthMiddleware.js";
-import filerUser from "../controllers/filerUser.controller.js";
+import filerUser from "../controllers/user/filerUser.controller.js";
 
 const router = new Router();
 
