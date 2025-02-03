@@ -8,10 +8,16 @@ const userValidateSchema = z.object({
     password: z.string().min(6, "minimum 6 characters required").max(18, "ppassword maximum can contain 18 characters")
 });
 
+const userLoginValidateSchema = z.object({
+    username: z.string().min(3, "username should contain atleast 3 characters").max("username can have at most 15 characters"),
+    password: z.string().min(6, "minimum 6 characters required").max(18, "ppassword maximum can contain 18 characters")
+
+})
+
 const validateUserSignup = (data) => {
 
     try {
-        userValidateSchema.parse(data);
+        userValidateSchema.safeParse(data);
         return {
             sucess: true
         }
@@ -26,4 +32,22 @@ const validateUserSignup = (data) => {
     }
 }
 
-export default validateUserSignup
+const validateUserSignin = (data) => {
+
+    try {
+        userLoginValidateSchema.safeParse(data);
+        return {
+            sucess: true
+        }
+
+    } catch (err) {
+
+        return {
+            success: false,
+            error: err.errors.map(e => e.message).join(", ")
+        }
+
+    }
+}
+
+export { validateUserSignup, validateUserSignin } 
