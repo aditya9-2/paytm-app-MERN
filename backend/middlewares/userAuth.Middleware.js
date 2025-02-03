@@ -40,3 +40,5 @@ const userAuthToken = async (req, res, next) => {
     }
 
 }
+
+export default userAuthToken;
