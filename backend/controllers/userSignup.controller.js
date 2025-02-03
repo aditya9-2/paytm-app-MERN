@@ -31,7 +31,7 @@ const userSignup = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        await userModel.create({
+        const newUser = await userModel.create({
             username,
             password: hashedPassword,
             firstName,
@@ -39,7 +39,7 @@ const userSignup = async (req, res) => {
         });
 
         const token = jwt.sign({
-            userId: userModel._id
+            userId: newUser._id
         }, process.env.USER_JWT_SECRET);
 
 
@@ -52,7 +52,7 @@ const userSignup = async (req, res) => {
 
         res.status({
             message: "unexpected error occured while signiup",
-            error: err
+            error: err.message
         });
         return;
     }
