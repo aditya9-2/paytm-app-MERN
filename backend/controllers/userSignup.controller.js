@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { validateUserSignup } from "../validators/userValidator.js";
+import accountModel from "../models/account.model.js";
 
 const userSignup = async (req, res) => {
     const validateResult = validateUserSignup(req.body);
@@ -36,9 +37,17 @@ const userSignup = async (req, res) => {
             lastName
         });
 
+        // give random balance to the user after signup
+        const userId = newUser._id;
+
+        const totalBalance = await accountModel.create({
+            userId,
+            balance: 1 + Math.random() * 1000
+        });
+
         return res.status(200).json({
             message: "User created successfully",
-
+            totalBalance: totalBalance.balance
         });
 
     } catch (err) {
