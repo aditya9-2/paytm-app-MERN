@@ -3,7 +3,9 @@ import Navbar from "./components/Navbar";
 const App = () => {
   return (
     <>
-      <Navbar />
+      <div className="h-screen bg-blue-50">
+        <Navbar />
+      </div>
     </>
   );
 };
