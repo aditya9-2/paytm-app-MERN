@@ -1,9 +1,30 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GrClose } from "react-icons/gr";
+// import Button from "./Button";
+import Profilebox from "./Profilebox";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Navbar = () => {
   const [openHamburger, setOpenHamburger] = useState(false);
+
+  const menuItems = [
+    { name: "Ticket Booking", hasDropdown: true },
+    { name: "Recharge & Bills", hasDropdown: true },
+    { name: "Payments & Services", hasDropdown: true },
+    { name: "Paytm for Business", hasDropdown: true },
+    { name: "Company", hasDropdown: true },
+  ];
+
+  const NavItem = ({ name, hasDropdown }) => (
+    <li className="flex justify-between items-center gap-3">
+      <a className="hover:text-gray-600" href="#">
+        {name}
+      </a>
+      {hasDropdown && <IoIosArrowDown />}
+    </li>
+  );
 
   const toggleHamburger = () => {
     setOpenHamburger(!openHamburger);
@@ -24,46 +45,27 @@ const Navbar = () => {
           </button>
 
           <span className="hover:cursor-pointer">
-            <img
-              src="https://pwebassets.paytm.com/commonwebassets/paytmweb/header/images/logo_new.svg"
-              alt="paytmLogo"
-              width={169}
-            />
+            <a href="/">
+              <img
+                src="https://pwebassets.paytm.com/commonwebassets/paytmweb/header/images/logo_new.svg"
+                alt="paytmLogo"
+                width={169}
+              />
+            </a>
           </span>
         </div>
 
         {/* ?desktop navigation */}
         <div className="hidden md:flex">
           <ul className="flex gap-3 items-center">
-            <li>
-              <a className="hover:text-gray-600" href="#">
-                Ticket Booking
-              </a>
-            </li>
-            <li>
-              <a className="hover:text-gray-600" href="#">
-                Reacherg & Bills
-              </a>
-            </li>
-            <li>
-              <a className="hover:text-gray-600" href="#">
-                Payments & Services
-              </a>
-            </li>
-            <li>
-              <a className="hover:text-gray-600" href="#">
-                Paytm for Business
-              </a>
-            </li>
-            <li>
-              <a className="hover:text-gray-600" href="#">
-                Company
-              </a>
-            </li>
+            {menuItems.map((item, index) => (
+              <NavItem key={index} {...item} />
+            ))}
           </ul>
         </div>
 
-        <div className="w-10 h-10 border border-black bg-gray-300 rounded-full"></div>
+        {/* <Button lable={"Signup"} /> */}
+        <Profilebox lable={"Aditya"} />
       </div>
 
       {/* Hamburger logic */}
@@ -73,32 +75,10 @@ const Navbar = () => {
           openHamburger ? "translate-x-0" : "-translate-x-full"
         } md:hidden`}
       >
-        <ul className="flex flex-col gap-6 p-5">
-          <li>
-            <a className="hover:text-gray-600" href="#">
-              Ticket Booking
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-gray-600" href="#">
-              Reacherg & Bills
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-gray-600" href="#">
-              Payments & Services
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-gray-600" href="#">
-              Paytm for Business
-            </a>
-          </li>
-          <li>
-            <a className="hover:text-gray-600" href="#">
-              Company
-            </a>
-          </li>
+        <ul className="flex flex-col gap-6 p-5 mt-15">
+          {menuItems.map((item, index) => (
+            <NavItem key={index} {...item} />
+          ))}
         </ul>
       </div>
     </>
