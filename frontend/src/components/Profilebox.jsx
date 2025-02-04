@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { nameSlicer } from "../utils/NameSlice";
+import { nameSlicer } from "../helper/NameSlice";
 
 const Profilebox = ({ lable }) => {
   const [isHovered, setIsHovered] = useState(false);
