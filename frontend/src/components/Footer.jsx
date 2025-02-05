@@ -6,7 +6,10 @@ const Footer = () => {
     <div className="w-[34.7rem] md:w-[94.8rem] mt-5 bg-cyan-500 h-24 relative bottom-[-1.5rem] overflow-hidden">
       <div className="text-white md:text-xl text-center py-5">
         {" "}
-        &copy; All RIghts Reserved - 2025 | Made By Aditya
+        &copy; All RIghts Reserved - 2025 | Made By{" "}
+        <span className="font-semibold font-script text-2xl text-pink-500">
+          Aditya
+        </span>
         <div className="flex justify-center items-center mx-8 gap-3 text-2xl mt-3">
           <a
             href="https://x.com/aadityaa027"
