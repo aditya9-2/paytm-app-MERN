@@ -1,1 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap');
 @import "tailwindcss";
+
+@theme{
+    --font-script: "Cedarville Cursive", serif;
+}
