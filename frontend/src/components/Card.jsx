@@ -1,8 +1,8 @@
 import MiniCard from "./MiniCard";
-import phone from "../../assets/phone.png";
-import DTH from "../../assets/dth.png";
-import car from "../../assets/car.png";
-import viewAll from "../../assets/viewAll.png";
+import phone from "../assets/phone.png";
+import DTH from "../assets/dth.png";
+import car from "../assets/car.png";
+import viewAll from "../assets/viewAll.png";
 
 const Card = () => {
   return (
