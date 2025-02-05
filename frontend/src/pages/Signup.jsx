@@ -40,7 +40,7 @@ const Signup = ({ toggleSignin, onClose }) => {
         </div>
 
         <button
-          className="mt-5 w-full bg-blue-500 text-white py-2 rounded-3xl 
+          className="mt-5 w-[20rem] bg-blue-500 text-white py-2 rounded-3xl 
         hover:bg-blue-600 transition-all duration-300 font-semibold hover:opacity-75 hover:curpo"
         >
           Sign Up
