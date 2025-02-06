@@ -21,6 +21,9 @@ const WalletCard = ({ onPayClick }) => {
         <Button lable={"Pay"} onclick={onPayClick} />
       </div>
       <div className="w-full bg-gray-300 h-[1px] mt-8 rounded-2xl"></div>
+      <p className="text-gray-400 absolute bottom-0 mb-3 left-35 text-sm">
+        &#169; Powered By lakshmi cheat fund!
+      </p>
     </div>
   );
 };
