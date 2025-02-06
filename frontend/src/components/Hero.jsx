@@ -3,7 +3,7 @@ import Button from "./Button";
 const Hero = ({ Heading, paragraph, mainImage, HeroLogo, backgroundColor }) => {
   return (
     <div
-      className={`w-[30rem] p-6 h-auto ${backgroundColor} shadow-2xl rounded-3xl mt-10 md:flex md:w-[60rem]`}
+      className={`w-[28rem] p-6 h-auto ${backgroundColor} shadow-2xl rounded-3xl mt-10 md:flex md:w-[60rem]`}
     >
       <div className="md:flex md:flex-col">
         <img src={HeroLogo} alt="HeaderLogo" className="w-40 " />
