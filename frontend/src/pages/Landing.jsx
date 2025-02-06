@@ -30,7 +30,7 @@ const Landing = () => {
   ];
   return (
     <>
-      <div className="w-full bg-blue-50 flex flex-col justify-center items-center p-4">
+      <div className="w-full bg-blue-50 flex flex-col justify-center items-center p-4 overflow-hidden">
         <div className="flex flex-col md:flex-row md:gap-6">
           <Card title={"Recharges"} items={rechargeItems} />
           <Card title={"Bill Payments"} items={travelItems} />
