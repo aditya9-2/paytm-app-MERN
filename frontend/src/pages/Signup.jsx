@@ -1,8 +1,90 @@
 /* eslint-disable react/prop-types */
+import { useRef, useState } from "react";
 import Input from "../components/Input";
 import { GrClose } from "react-icons/gr";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const Signup = ({ toggleSignin, onClose }) => {
+  const [error, setError] = useState(null);
+  const userNameRef = useRef(null);
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleSignup = async () => {
+    const username = userNameRef.current.value;
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const password = passwordRef.current.value;
+
+    try {
+      if (!username) {
+        setError("Please enter a username");
+        setTimeout(() => setError(null), 1500);
+        return;
+      }
+
+      if (!firstName) {
+        setError("Please enter your first name");
+        setTimeout(() => setError(null), 1500);
+        return;
+      }
+
+      if (!lastName) {
+        setError("Please enter your last name");
+        setTimeout(() => setError(null), 1500);
+        return;
+      }
+
+      if (!password) {
+        setError("Please enter a password");
+        setTimeout(() => setError(null), 1500);
+        return;
+      }
+
+      const response = await axios.post(
+        `http://localhost:3000/api/v1/user/signup`,
+        {
+          username,
+          firstName,
+          lastName,
+          password,
+        }
+      );
+
+      const data = response.data;
+
+      if (data) {
+        toast.success("Signup successfull", {
+          position: "bottom-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setTimeout(() => {
+          toggleSignin(); // swith to signin
+        }, 1500);
+      }
+    } catch (error) {
+      toast.error("Signup failed. Please try again!", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+      console.log("Unexpected error", error.message);
+    }
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/[.40] z-50">
       <div className="bg-white rounded-2xl shadow-xl p-6 w-96 relative">
@@ -20,28 +102,49 @@ const Signup = ({ toggleSignin, onClose }) => {
         <div className="space-y-4">
           <div className="flex flex-col">
             <label className="text-gray-600 text-sm mb-1">Username</label>
-            <Input type="text" placeholder="Enter your username" />
+            <Input
+              ref={userNameRef}
+              type="text"
+              placeholder="Enter your username"
+            />
           </div>
 
           <div className="flex flex-col">
             <label className="text-gray-600 text-sm mb-1">First Name</label>
-            <Input type="email" placeholder="Enter your first name" />
+            <Input
+              ref={firstNameRef}
+              type="text"
+              placeholder="Enter your first name"
+            />
           </div>
 
           <div className="flex flex-col">
             <label className="text-gray-600 text-sm mb-1">Last Name</label>
-            <Input type="email" placeholder="Enter your last name" />
+            <Input
+              ref={lastNameRef}
+              type="text"
+              placeholder="Enter your last name"
+            />
           </div>
 
           <div className="flex flex-col">
             <label className="text-gray-600 text-sm mb-1">Password</label>
-            <Input type="password" placeholder="Enter your password" />
+            <Input
+              ref={passwordRef}
+              type="password"
+              placeholder="Enter your password"
+            />
           </div>
         </div>
 
+        {error && (
+          <p className="text-center text-sm text-red-600 mt-3">{error}</p>
+        )}
+
         <button
           className="mt-5 w-[20rem] bg-blue-500 text-white py-2 rounded-3xl 
-        hover:bg-blue-600 transition-all duration-300 font-semibold hover:opacity-75 hover:curpo"
+        hover:bg-blue-600 transition-all duration-300 font-semibold hover:opacity-75 hover:cursor-pointer"
+          onClick={handleSignup}
         >
           Sign Up
         </button>
@@ -56,6 +159,7 @@ const Signup = ({ toggleSignin, onClose }) => {
           </button>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };
