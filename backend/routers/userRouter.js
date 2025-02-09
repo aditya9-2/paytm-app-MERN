@@ -11,7 +11,7 @@ const router = new Router();
 router.post("/signup", userSignup);
 router.post("/signin", userSignin);
 
-router.get('/me', getUserDetails);
+router.get('/me', userAuthToken, getUserDetails);
 router.put("/update", userAuthToken, updateUserInformation);
 router.get("/bulk", filerUser);
 
