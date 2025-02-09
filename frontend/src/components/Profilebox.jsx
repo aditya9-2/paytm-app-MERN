@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { nameSlicer } from "../helper/NameSlice";
+import { useNavigate } from "react-router-dom";
 
 const Profilebox = ({ lable }) => {
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -19,6 +21,12 @@ const Profilebox = ({ lable }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+    navigate("/");
+  };
 
   return (
     <div
@@ -36,10 +44,11 @@ const Profilebox = ({ lable }) => {
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
               Profile
             </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              Pay to a Friend
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-400">
+
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-400"
+              onClick={handleLogout}
+            >
               Logout
             </li>
           </ul>
