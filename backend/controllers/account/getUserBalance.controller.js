@@ -7,7 +7,7 @@ const getUserBalance = async (req, res) => {
         const account = await accountModel.findOne({ userId: req.userId });
 
         if (!account) {
-            res.statu(403).json({
+            res.status(403).json({
                 message: "Incorrect ID",
 
             });
