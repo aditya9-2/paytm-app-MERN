@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Button from "./Button";
 
-const WalletCard = ({ onPayClick }) => {
+const WalletCard = ({ onPayClick, balance }) => {
   return (
     <div className="w-[30rem] md:w-full h-64 md:mx-8 rounded-2xl bg-slate-50 relative top-[-8rem] shadow-xl border border-gray-500 p-5">
       <div>
@@ -13,7 +13,8 @@ const WalletCard = ({ onPayClick }) => {
           <p className="font-semibold text-sm uppercase">Total Balance</p>
         </div>
         <span className="mx-14 absolute top-12 font-bold flex gap-1 items-center text-xl">
-          <span className="text-cyan-500 font-bold">₹</span> 1000
+          <span className="text-cyan-500 font-bold">₹</span>{" "}
+          {balance ?? "Loading..."}
         </span>
       </div>
 
