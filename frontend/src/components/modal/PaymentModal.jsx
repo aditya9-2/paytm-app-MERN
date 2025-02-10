@@ -1,54 +1,62 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../Button";
 import { GrClose } from "react-icons/gr";
-
-const dummyUsers = [
-  "Amit Sharma",
-  "Rahul Gupta",
-  "Sneha Verma",
-  "Vikas Singh",
-  "Neha Patel",
-  "Sourav Roy",
-  "Priya Das",
-  "Rohan Mehta",
-  "Ananya Bose",
-  "Kunal Mukherjee",
-  "Meera Kapoor",
-  "Sanjay Nair",
-  "Tina D'Souza",
-  "Varun Malhotra",
-  "Ishita Ghosh",
-];
+import axios from "axios";
 
 const PaymentModal = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-  //   const filteredUsers = dummyUsers.filter((user) =>
-  //     user.toLowerCase().includes(selectedUser.toLowerCase())
-  //   );
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+  // Debounce the search term
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300); // Delay API call by 300ms
 
-    // Filter users only when the input is not empty
-    if (value.trim() !== "") {
-      setFilteredUsers(
-        dummyUsers.filter((user) =>
-          user.toLowerCase().includes(value.toLowerCase())
-        )
-      );
+    return () => {
+      clearTimeout(handler); // Cleanup timeout
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (debouncedSearchTerm.trim() !== "") {
+      fetchUsers(debouncedSearchTerm);
     } else {
+      setFilteredUsers([]);
+    }
+  }, [debouncedSearchTerm]);
+
+  const fetchUsers = async (value) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/user/bulk?filteredUser=${value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200 && response.data.users) {
+        setFilteredUsers(response.data.users);
+      } else {
+        setFilteredUsers([]);
+      }
+    } catch (err) {
+      console.error("Error fetching users:", err.message);
       setFilteredUsers([]);
     }
   };
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);
-    setSearchTerm(user); // Set selected user to the input field
+    setSearchTerm(`${user.firstName} ${user.lastName}`); // This will selected user to the input field
     setFilteredUsers([]); // Hide the list after selection
   };
 
@@ -78,7 +86,7 @@ const PaymentModal = ({ onClose }) => {
           type="text"
           placeholder="Search user here"
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full p-3 mb-2 rounded-md border border-gray-300 bg-gray-100 outline-0 shadow-sm text-black"
         />
 
@@ -86,29 +94,15 @@ const PaymentModal = ({ onClose }) => {
           <p className="text-red-500 text-sm mb-2">{errorMessage}</p>
         )}
 
-        {/* {selectedUser && filteredUsers.length > 0 && (
-          <div className="max-h-40 overflow-y-auto border border-gray-300 rounded-md p-2 bg-gray-50">
-            {filteredUsers.map((user, index) => (
-              <p
-                key={index}
-                className="p-2 cursor-pointer hover:bg-gray-200 rounded transition"
-                onClick={() => setSelectedUser(user)}
-              >
-                {user}
-              </p>
-            ))}
-          </div>
-        )} */}
-
         {filteredUsers.length > 0 && (
           <div className="max-h-40 overflow-y-auto border border-gray-300 rounded-md p-2 bg-gray-50">
-            {filteredUsers.map((user, index) => (
+            {filteredUsers.map((user) => (
               <p
-                key={index}
+                key={user._id}
                 className="p-2 cursor-pointer hover:bg-gray-200 rounded transition"
                 onClick={() => handleSelectUser(user)} // Handle name click
               >
-                {user}
+                {user.firstName} {user.lastName}
               </p>
             ))}
           </div>
