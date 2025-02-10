@@ -13,6 +13,6 @@ router.post("/signin", userSignin);
 
 router.get('/me', userAuthToken, getUserDetails);
 router.put("/update", userAuthToken, updateUserInformation);
-router.get("/bulk", filerUser);
+router.get("/bulk", userAuthToken, filerUser);
 
 export default router
