@@ -44,6 +44,12 @@ const Profilebox = ({ lable }) => {
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
               Profile
             </li>
+            <li
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => navigate("/dashboard")}
+            >
+              Pay your friend
+            </li>
 
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-400"
