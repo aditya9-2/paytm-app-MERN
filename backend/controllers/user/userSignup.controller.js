@@ -42,7 +42,7 @@ const userSignup = async (req, res) => {
 
         const totalBalance = await accountModel.create({
             userId,
-            balance: 1 + Math.random() * 1000
+            balance: 1 + Math.random() * 10000
         });
 
         return res.status(200).json({
