@@ -15,10 +15,10 @@ const PaymentModal = ({ onClose }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 300); // Delay API call by 300ms
+    }, 300);
 
     return () => {
-      clearTimeout(handler); // Cleanup timeout
+      clearTimeout(handler);
     };
   }, [searchTerm]);
 
