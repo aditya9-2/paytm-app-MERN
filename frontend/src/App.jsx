@@ -5,19 +5,22 @@ import Dashboard from "./pages/Dashboard";
 // import Dashboard from "./pages/Dashboard";
 import { Navigate, Outlet } from "react-router-dom";
 import Update from "./pages/Update";
+import Success from "./pages/Success";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
     <Router>
       <Navbar />
       <Routes>
-        {/* Default route to Landing */}
         <Route path="/" element={<Landing />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/update" element={<Update />} />
+          <Route path="/success" element={<Success />} />
         </Route>
       </Routes>
+      <Footer />
     </Router>
   );
 };
