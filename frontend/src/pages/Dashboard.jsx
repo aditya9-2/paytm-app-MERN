@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import WalletCard from "../components/WalletCard";
 import PaymentModal from "../components/modal/PaymentModal";
 import axios from "axios";
@@ -42,15 +41,14 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <div className="h-[calc(100vh_-6rem)]">
       <div className="w-full h-[15rem] bg-blue-950 "></div>
       <div className="flex justify-center items-center relative z-0">
         <WalletCard onPayClick={toggleModal} balance={balance} />
       </div>
 
       {isModalOpen && <PaymentModal onClose={toggleModal} />}
-    </>
+    </div>
   );
 };
 
