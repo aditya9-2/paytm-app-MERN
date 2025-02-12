@@ -4,6 +4,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 // import Dashboard from "./pages/Dashboard";
 import { Navigate, Outlet } from "react-router-dom";
+import Update from "./pages/Update";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/update" element={<Update />} />
         </Route>
       </Routes>
     </Router>
