@@ -3,7 +3,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <div className="w-[34.7rem] md:w-[94.8rem] mt-5 bg-cyan-500 h-24 relative bottom-[-1.5rem] overflow-hidden">
+    <div className="w-full bg-cyan-500 h-24  overflow-hidden">
       <div className="text-white md:text-xl text-center py-5">
         {" "}
         &copy; All RIghts Reserved - 2025 | Made By{" "}
