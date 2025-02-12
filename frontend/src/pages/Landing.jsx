@@ -12,7 +12,6 @@ import bigPhone from "../assets/bigPhone.png";
 import secondHero from "../assets/hero2.png";
 import headerLogo from "../assets/triangle.png";
 import paytmLogo from "../assets/paytm.png";
-import Footer from "../components/Footer";
 
 const Landing = () => {
   const rechargeItems = [
@@ -56,7 +55,6 @@ const Landing = () => {
             mainImage={secondHero}
           />
         </div>
-        <Footer />
       </div>
     </>
   );
