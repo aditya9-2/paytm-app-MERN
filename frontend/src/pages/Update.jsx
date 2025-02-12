@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import Input from "../components/Input";
-import Navbar from "../components/Navbar";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -99,8 +98,7 @@ const Update = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="bg-gradient-to-bl from-white to-[#66c3ff]/45  min-h-screen overflow-hidden flex justify-center items-center h-[calc(100vh_-_10rem)]">
+      <div className="bg-gradient-to-bl from-white to-[#66c3ff]/45  h-[calc(100vh-6rem)] overflow-hidden flex justify-center items-center">
         <div className="w-96 bg-white p-8 rounded-2xl shadow-xl border border-gray-300">
           <h2 className="text-2xl font-semibold text-center mb-6">
             Update Details
