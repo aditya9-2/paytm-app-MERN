@@ -5,6 +5,8 @@ import { GrClose } from "react-icons/gr";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import authState from "../store/authState";
 
 const Signin = ({ toggleSignup, onClose }) => {
   const usernameRef = useRef(null);
@@ -12,6 +14,7 @@ const Signin = ({ toggleSignup, onClose }) => {
 
   const [error, setError] = useState("");
 
+  const setUser = useSetRecoilState(authState);
   const navigate = useNavigate();
 
   const handleSignin = async () => {
@@ -31,7 +34,8 @@ const Signin = ({ toggleSignup, onClose }) => {
     }
 
     try {
-      const response = await axios.post(
+      // First sign in to get the token
+      const signinResponse = await axios.post(
         `http://localhost:3000/api/v1/user/signin`,
         {
           username,
@@ -39,13 +43,26 @@ const Signin = ({ toggleSignup, onClose }) => {
         }
       );
 
-      const data = response.data;
-      const token = data.token;
+      const { token } = signinResponse.data;
 
-      if (data && token) {
+      if (token) {
         localStorage.setItem("token", token);
 
-        toast.success("Signin successfull", {
+        // Then fetch user details using the token
+        const userResponse = await axios.get(
+          `http://localhost:3000/api/v1/user/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const { user } = userResponse.data;
+
+        // Set the complete user object in Recoil state
+
+        toast.success("Signin successful", {
           position: "bottom-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -58,11 +75,22 @@ const Signin = ({ toggleSignup, onClose }) => {
 
         setTimeout(() => {
           onClose();
+          setUser(user);
           navigate("/dashboard");
         }, 1600);
       }
     } catch (error) {
-      toast.error("Signin failed. Please try again!", {
+      let errorMessage = "Signin failed. Please try again!";
+
+      if (error.response) {
+        if (error.response.status === 404) {
+          errorMessage = "Username not found";
+        } else if (error.response.status === 401) {
+          errorMessage = "Incorrect password";
+        }
+      }
+
+      toast.error(errorMessage, {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -72,9 +100,10 @@ const Signin = ({ toggleSignup, onClose }) => {
         theme: "light",
       });
 
-      console.log("Unexpected error occured while signin", error.message);
+      console.log("Error during signin:", error.message);
     }
   };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/[.40] z-50">
       <div className="bg-white rounded-2xl shadow-xl p-6 w-96 relative">
