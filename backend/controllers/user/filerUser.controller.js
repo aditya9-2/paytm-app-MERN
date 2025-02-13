@@ -10,12 +10,40 @@ const filterUser = async (req, res) => {
 
 
     try {
-        const getUser = await userModel.find({
-            $or: [
-                { firstName: { $regex: filteredUser, $options: "i" } },
-                { lastName: { $regex: filteredUser, $options: "i" } }
-            ]
-        });
+        const searchTerms = filteredUser.trim().split(/\s+/);
+
+        let query;
+
+        if (searchTerms.length > 1) {
+
+            const firstName = searchTerms[0];
+            const lastName = searchTerms.slice(1).join(' ');
+
+            query = {
+                $or: [
+                    // Match exact combination of first and last name
+                    {
+                        $and: [
+                            { firstName: { $regex: `^${firstName}`, $options: "i" } },
+                            { lastName: { $regex: `^${lastName}`, $options: "i" } }
+                        ]
+                    },
+                    // Match either first name or last name containing the full search term
+                    { firstName: { $regex: filteredUser, $options: "i" } },
+                    { lastName: { $regex: filteredUser, $options: "i" } }
+                ]
+            };
+        } else {
+
+            query = {
+                $or: [
+                    { firstName: { $regex: `^${filteredUser}`, $options: "i" } },
+                    { lastName: { $regex: `^${filteredUser}`, $options: "i" } }
+                ]
+            };
+        }
+
+        const getUser = await userModel.find(query);
 
         if (!getUser || getUser.length === 0) {
             return res.status(404).json({ message: "No users found" });
