@@ -34,8 +34,10 @@ const PaymentModal = ({ onClose }) => {
     try {
       const token = localStorage.getItem("token");
 
+      const encodedSearch = encodeURIComponent(value.trim());
+
       const response = await axios.get(
-        `http://localhost:3000/api/v1/user/bulk?filteredUser=${value}`,
+        `http://localhost:3000/api/v1/user/bulk?filteredUser=${encodedSearch}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
