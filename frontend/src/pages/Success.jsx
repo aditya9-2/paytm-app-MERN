@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import sucessIcon from "../assets/sucess.png";
 
 export default function Success() {
-  const [counter, setCounter] = useState(3);
+  const [counter, setCounter] = useState(4);
   const navigate = useNavigate();
 
   useEffect(() => {
