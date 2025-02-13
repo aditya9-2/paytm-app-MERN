@@ -45,7 +45,10 @@ const userSignin = async (req, res) => {
 
         res.status(200).json({
             message: "signin successful",
-            user: isExistingUser.firstName,
+            user: {
+                firstName: isExistingUser.firstName,
+                _id: isExistingUser._id,
+            },
             token,
         });
 
