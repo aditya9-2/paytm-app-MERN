@@ -7,13 +7,16 @@ import { IoIosArrowDown } from "react-icons/io";
 import Signup from "../pages/Signup";
 import Signin from "../pages/Signin";
 import Profilebox from "./Profilebox";
+
+import { useRecoilState } from "recoil";
+import authState from "../store/authState";
 import axios from "axios";
 
 const Navbar = () => {
   const [openHamburger, setOpenHamburger] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useRecoilState(authState);
 
   const menuItems = [
     { name: "Ticket Booking", hasDropdown: true },
@@ -26,7 +29,10 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
-      if (!token) return;
+      if (!token) {
+        setUser(null);
+        return;
+      }
 
       try {
         const response = await axios.get(
@@ -39,20 +45,18 @@ const Navbar = () => {
         );
 
         const data = response.data;
-
-        if (!data || !data.user) {
-          console.log(`No data found`);
-          return;
+        if (data && data.user) {
+          setUser(data.user);
         }
-
-        setUser(data.user);
       } catch (error) {
         console.log(`Error while fetching user: ${error.message}`);
+        localStorage.removeItem("token");
+        setUser(null);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [setUser]);
 
   const toggleModal = () => {
     setShowModal(true);
