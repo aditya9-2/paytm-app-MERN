@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "../Button";
 import { GrClose } from "react-icons/gr";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PaymentModal = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,6 +13,8 @@ const PaymentModal = ({ onClose }) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   // Debounce the search term
   useEffect(() => {
@@ -91,25 +94,54 @@ const PaymentModal = ({ onClose }) => {
     }
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!selectedUser) {
       setErrorMessage("Please Select valid User first!");
-      setTimeout(() => setErrorMessage(""), 1500);
+      setTimeout(() => setErrorMessage(""), 2000);
       return;
     }
 
     if (amount <= 0) {
       setErrorMessage("Please enter a valid amount!");
-      setTimeout(() => setErrorMessage(""), 1500);
+      setTimeout(() => setErrorMessage(""), 2000);
       return;
     }
 
-    // Todo: Handle payment logic here
-    console.log(
-      `processing payment for: ${JSON.stringify(selectedUser)} id: ${
-        selectedUser._id
-      } amount: ${amount}`
-    );
+    try {
+      const token = localStorage.getItem("token");
+      const to = selectedUser._id;
+
+      const response = await axios.post(
+        `http://localhost:3000/api/v1/account/transfer`,
+        {
+          amount,
+          to,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token} `,
+          },
+        }
+      );
+
+      if (!response.data) {
+        setErrorMessage("unable to transaction, please try again later");
+        setTimeout(() => setErrorMessage(""), 2000);
+        return;
+      }
+
+      navigate("/success");
+    } catch (err) {
+      console.log(`Error during transaction: ${err.message}`);
+      setErrorMessage("Server Error");
+      setTimeout(() => setErrorMessage(""), 2000);
+    }
+
+    // console.log(
+    //   `processing payment for: ${JSON.stringify(selectedUser)} id: ${
+    //     selectedUser._id
+    //   } amount: ${amount}`
+    // );
   };
 
   return (
@@ -143,7 +175,6 @@ const PaymentModal = ({ onClose }) => {
           placeholder="Enter Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          // onClick={handlePayment}
           className="w-full p-3 mb-2 rounded-md border border-gray-300 bg-gray-100 outline-0 shadow-sm text-black"
         />
 
