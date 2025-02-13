@@ -11,11 +11,9 @@ import authState from "../store/authState";
 const Signin = ({ toggleSignup, onClose }) => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-
   const [error, setError] = useState("");
-
-  const setUser = useSetRecoilState(authState);
   const navigate = useNavigate();
+  const setUser = useSetRecoilState(authState);
 
   const handleSignin = async () => {
     const username = usernameRef.current.value;
@@ -34,7 +32,7 @@ const Signin = ({ toggleSignup, onClose }) => {
     }
 
     try {
-      // First sign in to get the token
+      //  sign in to get the token
       const signinResponse = await axios.post(
         `http://localhost:3000/api/v1/user/signin`,
         {
@@ -48,7 +46,7 @@ const Signin = ({ toggleSignup, onClose }) => {
       if (token) {
         localStorage.setItem("token", token);
 
-        // Then fetch user details using the token
+        //  fetch user details using the token
         const userResponse = await axios.get(
           `http://localhost:3000/api/v1/user/me`,
           {
@@ -59,8 +57,6 @@ const Signin = ({ toggleSignup, onClose }) => {
         );
 
         const { user } = userResponse.data;
-
-        // Set the complete user object in Recoil state
 
         toast.success("Signin successful", {
           position: "bottom-right",
@@ -75,7 +71,7 @@ const Signin = ({ toggleSignup, onClose }) => {
 
         setTimeout(() => {
           onClose();
-          setUser(user);
+          setUser(user); 
           navigate("/dashboard");
         }, 1600);
       }
