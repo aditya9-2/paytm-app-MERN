@@ -6,21 +6,24 @@ import Dashboard from "./pages/Dashboard";
 import { Navigate, Outlet } from "react-router-dom";
 import Update from "./pages/Update";
 import Success from "./pages/Success";
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/update" element={<Update />} />
-          <Route path="/success" element={<Success />} />
-        </Route>
-      </Routes>
-      <Footer />
-    </Router>
+    <RecoilRoot>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/update" element={<Update />} />
+            <Route path="/success" element={<Success />} />
+          </Route>
+        </Routes>
+        <Footer />
+      </Router>
+    </RecoilRoot>
   );
 };
 
