@@ -7,15 +7,17 @@ import axios from "axios";
 const PaymentModal = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
+  const [amount, setAmount] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Debounce the search term
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 300);
+    }, 400);
 
     return () => {
       clearTimeout(handler);
@@ -23,18 +25,21 @@ const PaymentModal = ({ onClose }) => {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (debouncedSearchTerm.trim() !== "") {
+    if (!selectedUser && debouncedSearchTerm.trim() !== "") {
       fetchUsers(debouncedSearchTerm);
     } else {
       setFilteredUsers([]);
+      setErrorMessage("");
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, selectedUser]);
 
-  const fetchUsers = async (value) => {
+  const fetchUsers = async (val) => {
     try {
-      const token = localStorage.getItem("token");
+      setIsLoading(true);
+      setErrorMessage("");
 
-      const encodedSearch = encodeURIComponent(value.trim());
+      const token = localStorage.getItem("token");
+      const encodedSearch = encodeURIComponent(val.trim());
 
       const response = await axios.get(
         `http://localhost:3000/api/v1/user/bulk?filteredUser=${encodedSearch}`,
@@ -45,31 +50,66 @@ const PaymentModal = ({ onClose }) => {
         }
       );
 
-      if (response.status === 200 && response.data.users) {
+      if (response.data.users && response.data.users.length > 0) {
         setFilteredUsers(response.data.users);
       } else {
+        setErrorMessage("Please select a valid user");
+        setTimeout(() => setErrorMessage(""), 1500);
         setFilteredUsers([]);
       }
     } catch (err) {
       console.error("Error fetching users:", err.message);
       setFilteredUsers([]);
+      setErrorMessage("Please select a valid user");
+      setTimeout(() => setErrorMessage(""), 2000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);
-    setSearchTerm(`${user.firstName} ${user.lastName}`); // This will selected user to the input field
-    setFilteredUsers([]); // Hide the list after selection
+    setSearchTerm(`${user.firstName} ${user.lastName}`);
+    setFilteredUsers([]);
+    setErrorMessage("");
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (!value.trim()) {
+      setSelectedUser(null);
+      return;
+    }
+
+    if (
+      selectedUser &&
+      value !== `${selectedUser.firstName} ${selectedUser.lastName}`
+    ) {
+      setSelectedUser(null);
+    }
   };
 
   const handlePayment = () => {
-    if (selectedUser) {
-      alert(`Payment sent to ${selectedUser}`);
-      onClose();
-    } else {
-      setErrorMessage("Please select a user first!");
-      setTimeout(() => setErrorMessage(""), 1000);
+    if (!selectedUser) {
+      setErrorMessage("Please Select valid User first!");
+      setTimeout(() => setErrorMessage(""), 1500);
+      return;
     }
+
+    if (amount <= 0) {
+      setErrorMessage("Please enter a valid amount!");
+      setTimeout(() => setErrorMessage(""), 1500);
+      return;
+    }
+
+    // Todo: Handle payment logic here
+    console.log(
+      `processing payment for: ${JSON.stringify(selectedUser)} id: ${
+        selectedUser._id
+      } amount: ${amount}`
+    );
   };
 
   return (
@@ -83,17 +123,34 @@ const PaymentModal = ({ onClose }) => {
         </button>
 
         <h2 className="text-xl font-semibold mb-4">Send Payment</h2>
+        <div className="relative mb-4">
+          <input
+            type="text"
+            placeholder="Search user here"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-full p-3 mb-2 rounded-md border border-gray-300 bg-gray-100 outline-0 shadow-sm text-black"
+          />
+          {isLoading && (
+            <div className="absolute right-3 top-3 text-gray-500 text-sm">
+              Loading...
+            </div>
+          )}
+        </div>
 
         <input
-          type="text"
-          placeholder="Search user here"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          type="number"
+          placeholder="Enter Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          // onClick={handlePayment}
           className="w-full p-3 mb-2 rounded-md border border-gray-300 bg-gray-100 outline-0 shadow-sm text-black"
         />
 
         {errorMessage && (
-          <p className="text-red-500 text-sm mb-2">{errorMessage}</p>
+          <p className="text-red-500 text-center text-sm mb-2">
+            {errorMessage}
+          </p>
         )}
 
         {filteredUsers.length > 0 && (
@@ -102,7 +159,7 @@ const PaymentModal = ({ onClose }) => {
               <p
                 key={user._id}
                 className="p-2 cursor-pointer hover:bg-gray-200 rounded transition"
-                onClick={() => handleSelectUser(user)} // Handle name click
+                onClick={() => handleSelectUser(user)}
               >
                 {user.firstName} {user.lastName}
               </p>
