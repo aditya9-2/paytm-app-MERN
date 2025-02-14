@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import accountModel from "../../models/account.model.js"
+import bcrypt from "bcryptjs";
 
 const transferMoney = async (req, res) => {
 
@@ -8,10 +9,26 @@ const transferMoney = async (req, res) => {
         const session = await mongoose.startSession();
         session.startTransaction();
 
-        const { amount, to } = (req.body);
+        const { amount, to, pin } = (req.body);
 
         // fetch account within the transaction
         const account = await accountModel.findOne({ userId: req.userId }).session(session);
+
+        if (!account) {
+            await session.abortTransaction();
+            return res.status(404).json({
+                message: "Sender account not found"
+            });
+        }
+
+        const isPinValid = await bcrypt.compare(pin, account.pin);
+
+        if (!isPinValid) {
+            await session.abortTransaction();
+            return res.status(403).json({
+                message: "Invalid PIN. Transaction denied."
+            });
+        }
 
         if (!account || account.balance < amount) {
 
