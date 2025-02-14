@@ -5,6 +5,7 @@ import { GrClose } from "react-icons/gr";
 const PinModal = ({ onClose, onSubmit }) => {
   const [pin, setPin] = useState(["", "", "", ""]);
   const inputRefs = useRef([]);
+  const isDisabled = pin.includes("");
 
   useEffect(() => {
     if (inputRefs.current[0]) {
@@ -31,7 +32,7 @@ const PinModal = ({ onClose, onSubmit }) => {
 
   const handleSubmit = () => {
     const enteredPin = pin.join("");
-    if (enteredPin.length === 4) {
+    if (!isDisabled) {
       onSubmit(enteredPin);
     }
   };
@@ -40,7 +41,7 @@ const PinModal = ({ onClose, onSubmit }) => {
     <div className="fixed inset-0 bg-gray-900/[.40] flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[25rem] relative">
         <button
-          className="absolute top-3 right-3 text-black hover:bg-gray-200 p-2 hover:rounded-full transition-all"
+          className="absolute top-3 right-3 text-black hover:bg-gray-200 p-2 hover:rounded-full transition-all cursor-pointer"
           onClick={onClose}
         >
           <GrClose size={20} />
@@ -63,8 +64,13 @@ const PinModal = ({ onClose, onSubmit }) => {
           ))}
         </div>
         <button
-          className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold cursor-pointer"
+          className={`w-full p-3 rounded-lg font-semibold  transition-all ${
+            isDisabled
+              ? "bg-green-200 cursor-not-allowed"
+              : "bg-green-500 text-white hover:bg-green-400 hover:cursor-pointer"
+          }`}
           onClick={handleSubmit}
+          disabled={isDisabled}
         >
           Submit
         </button>
