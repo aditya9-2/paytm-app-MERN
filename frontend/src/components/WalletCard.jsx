@@ -41,7 +41,7 @@ const WalletCard = ({ onPayClick, balance }) => {
       </div>
 
       <div className="absolute right-0 mx-5 top-19">
-        <Button lable={"Pay"} onclick={onPayClick} />
+        <Button lable={"Initiate Payment"} onclick={onPayClick} />
       </div>
       <div className="w-full bg-gray-300 h-[1px] mt-8 rounded-2xl"></div>
       <p className="text-gray-400 absolute bottom-0 mb-3 left-35 md:left-[39rem] text-sm">
