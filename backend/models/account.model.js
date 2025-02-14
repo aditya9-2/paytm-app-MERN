@@ -9,6 +9,10 @@ const accountSchema = new mongoose.Schema({
     balance: {
         type: Number,
         required: true
+    },
+    pin: {
+        type: String,
+        required: true
     }
 });
 
