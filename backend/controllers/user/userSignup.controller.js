@@ -14,7 +14,7 @@ const userSignup = async (req, res) => {
         return;
     }
 
-    const { username, firstName, lastName, password } = req.body;
+    const { username, firstName, lastName, password, pin } = req.body;
 
     try {
 
@@ -30,19 +30,24 @@ const userSignup = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        const pinSalt = await bcrypt.genSalt(5);
+        const hashedPin = await bcrypt.hash(pin, pinSalt);
+
         const newUser = await userModel.create({
             username,
-            password: hashedPassword,
             firstName,
-            lastName
+            lastName,
+            password: hashedPassword,
+            pin: hashedPin
         });
 
-        // give random balance to the user after signup
+
         const userId = newUser._id;
 
         const totalBalance = await accountModel.create({
             userId,
-            balance: 1 + Math.random() * 10000
+            balance: 1 + Math.random() * 10000,
+            pin: hashedPin
         });
 
         return res.status(200).json({
@@ -52,10 +57,11 @@ const userSignup = async (req, res) => {
 
     } catch (err) {
 
-        res.status({
-            message: "unexpected error occured while signiup",
+        res.status(500).json({
+            message: "Unexpected error occurred while signup",
             error: err.message
         });
+
         return;
     }
 };
