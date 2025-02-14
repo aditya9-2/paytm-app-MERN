@@ -63,7 +63,7 @@ const PinModal = ({ onClose, onSubmit }) => {
           ))}
         </div>
         <button
-          className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold"
+          className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold cursor-pointer"
           onClick={handleSubmit}
         >
           Submit
