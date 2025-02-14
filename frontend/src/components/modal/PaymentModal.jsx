@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "../Button";
 import { GrClose } from "react-icons/gr";
 import axios from "axios";
+import PinModal from "./PinModal";
 import { useNavigate } from "react-router-dom";
 
 const PaymentModal = ({ onClose }) => {
@@ -13,6 +14,7 @@ const PaymentModal = ({ onClose }) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPinModalOpen, setIsPinModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -100,13 +102,16 @@ const PaymentModal = ({ onClose }) => {
       setTimeout(() => setErrorMessage(""), 2000);
       return;
     }
-
     if (amount <= 0) {
       setErrorMessage("Please enter a valid amount!");
       setTimeout(() => setErrorMessage(""), 2000);
       return;
     }
 
+    setIsPinModalOpen(true);
+  };
+
+  const handleSubmitPin = async (pin) => {
     try {
       const token = localStorage.getItem("token");
       const to = selectedUser._id;
@@ -116,6 +121,7 @@ const PaymentModal = ({ onClose }) => {
         {
           amount,
           to,
+          pin,
         },
         {
           headers: {
@@ -123,14 +129,12 @@ const PaymentModal = ({ onClose }) => {
           },
         }
       );
-
       if (!response.data) {
         setErrorMessage("unable to transaction, please try again later");
         setTimeout(() => setErrorMessage(""), 2000);
         return;
       }
-      // Todo:
-      // Need a 4 digit pin before transaction
+
       navigate("/success");
     } catch (err) {
       console.log(`Error during transaction: ${err.message}`);
@@ -197,6 +201,12 @@ const PaymentModal = ({ onClose }) => {
           <Button lable={"Pay"} onclick={handlePayment} />
         </div>
       </div>
+      {isPinModalOpen && (
+        <PinModal
+          onClose={() => setIsPinModalOpen(false)}
+          onSubmit={handleSubmitPin}
+        />
+      )}
     </div>
   );
 };
