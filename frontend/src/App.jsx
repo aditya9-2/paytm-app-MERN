@@ -7,6 +7,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import Update from "./pages/Update";
 import Success from "./pages/Success";
 import { RecoilRoot } from "recoil";
+import Failure from "./pages/Failure";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/update" element={<Update />} />
             <Route path="/success" element={<Success />} />
+            <Route path="/fail" element={<Failure />} />
           </Route>
         </Routes>
         <Footer />
