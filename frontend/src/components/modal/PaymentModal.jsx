@@ -129,19 +129,13 @@ const PaymentModal = ({ onClose }) => {
         setTimeout(() => setErrorMessage(""), 2000);
         return;
       }
-
+      // Todo:
+      // Need a 4 digit pin before transaction
       navigate("/success");
     } catch (err) {
       console.log(`Error during transaction: ${err.message}`);
-      setErrorMessage("Server Error");
-      setTimeout(() => setErrorMessage(""), 2000);
+      navigate("/fail");
     }
-
-    // console.log(
-    //   `processing payment for: ${JSON.stringify(selectedUser)} id: ${
-    //     selectedUser._id
-    //   } amount: ${amount}`
-    // );
   };
 
   return (
