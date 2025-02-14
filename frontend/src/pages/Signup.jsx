@@ -11,12 +11,14 @@ const Signup = ({ toggleSignin, onClose }) => {
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const passwordRef = useRef(null);
+  const pinRef = useRef(null);
 
   const handleSignup = async () => {
     const username = userNameRef.current.value;
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
     const password = passwordRef.current.value;
+    const pin = pinRef.current.value;
 
     try {
       if (!username) {
@@ -43,6 +45,12 @@ const Signup = ({ toggleSignin, onClose }) => {
         return;
       }
 
+      if (!pin) {
+        setError("Please enter a Pin");
+        setTimeout(() => setError(null), 1500);
+        return;
+      }
+
       const response = await axios.post(
         `http://localhost:3000/api/v1/user/signup`,
         {
@@ -50,6 +58,7 @@ const Signup = ({ toggleSignin, onClose }) => {
           firstName,
           lastName,
           password,
+          pin,
         }
       );
 
@@ -134,6 +143,13 @@ const Signup = ({ toggleSignin, onClose }) => {
               type="password"
               placeholder="Enter your password"
             />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-gray-600 text-sm mb-1">
+              Pin for transaction
+            </label>
+            <Input ref={pinRef} type="password" placeholder="Enter your Pin" />
           </div>
         </div>
 
