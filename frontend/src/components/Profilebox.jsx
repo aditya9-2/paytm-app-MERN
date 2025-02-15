@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
-import { nameSlicer } from "../helper/NameSlice";
+import { nameSlicer } from "../helper/nameSlice";
 import { useNavigate } from "react-router-dom";
 
 const Profilebox = ({ lable }) => {
