@@ -36,7 +36,7 @@ const Navbar = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/user/me`,
+          `${import.meta.env.VITE_API_URL}/api/v1/user/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

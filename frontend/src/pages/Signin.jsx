@@ -34,7 +34,7 @@ const Signin = ({ toggleSignup, onClose }) => {
     try {
       //  sign in to get the token
       const signinResponse = await axios.post(
-        `http://localhost:3000/api/v1/user/signin`,
+        `${import.meta.env.VITE_API_URL}/api/v1/user/signin`,
         {
           username,
           password,
@@ -48,7 +48,7 @@ const Signin = ({ toggleSignup, onClose }) => {
 
         //  fetch user details using the token
         const userResponse = await axios.get(
-          `http://localhost:3000/api/v1/user/me`,
+          `${import.meta.env.VITE_API_URL}/api/v1/user/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const Signin = ({ toggleSignup, onClose }) => {
 
         setTimeout(() => {
           onClose();
-          setUser(user); 
+          setUser(user);
           navigate("/dashboard");
         }, 1600);
       }

@@ -52,7 +52,7 @@ const Signup = ({ toggleSignin, onClose }) => {
       }
 
       const response = await axios.post(
-        `http://localhost:3000/api/v1/user/signup`,
+        `${import.meta.env.VITE_API_URL}/api/v1/user/signup`,
         {
           username,
           firstName,

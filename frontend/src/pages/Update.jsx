@@ -54,7 +54,7 @@ const Update = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:3000/api/v1/user/update",
+        `${import.meta.env.VITE_API_URL}/api/v1/user/update`,
 
         updateData,
         {

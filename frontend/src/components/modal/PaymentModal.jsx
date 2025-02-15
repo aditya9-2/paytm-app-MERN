@@ -47,7 +47,9 @@ const PaymentModal = ({ onClose }) => {
       const encodedSearch = encodeURIComponent(val.trim());
 
       const response = await axios.get(
-        `http://localhost:3000/api/v1/user/bulk?filteredUser=${encodedSearch}`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/v1/user/bulk?filteredUser=${encodedSearch}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -117,7 +119,7 @@ const PaymentModal = ({ onClose }) => {
       const to = selectedUser._id;
 
       const response = await axios.post(
-        `http://localhost:3000/api/v1/account/transfer`,
+        `${import.meta.env.VITE_API_URL}/api/v1/account/transfer`,
         {
           amount,
           to,
