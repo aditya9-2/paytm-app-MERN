@@ -10,7 +10,8 @@ import Profilebox from "./Profilebox";
 
 import { useRecoilState } from "recoil";
 import authState from "../store/authState";
-import axios from "axios";
+
+import axiosInstance from "../utils/axiosInstance";
 
 const Navbar = () => {
   const [openHamburger, setOpenHamburger] = useState(false);
@@ -35,7 +36,7 @@ const Navbar = () => {
       }
 
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           `${import.meta.env.VITE_API_URL}/api/v1/user/me`,
           {
             headers: {

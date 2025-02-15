@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import Button from "./Button";
-import axios from "axios";
+
+import axiosInstance from "../utils/axiosInstance";
 
 const WalletCard = ({ onPayClick, balance }) => {
   const [username, setUsername] = useState("");
 
   const userData = async () => {
     const token = localStorage.getItem("token");
-    const response = await axios.get(
+    const response = await axiosInstance.get(
       `${import.meta.env.VITE_API_URL}/api/v1/user/me`,
       {
         headers: {

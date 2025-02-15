@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import Button from "../Button";
 import { GrClose } from "react-icons/gr";
-import axios from "axios";
+
 import PinModal from "./PinModal";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
 
 const PaymentModal = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +47,7 @@ const PaymentModal = ({ onClose }) => {
       const token = localStorage.getItem("token");
       const encodedSearch = encodeURIComponent(val.trim());
 
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${
           import.meta.env.VITE_API_URL
         }/api/v1/user/bulk?filteredUser=${encodedSearch}`,
@@ -118,7 +119,7 @@ const PaymentModal = ({ onClose }) => {
       const token = localStorage.getItem("token");
       const to = selectedUser._id;
 
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_API_URL}/api/v1/account/transfer`,
         {
           amount,

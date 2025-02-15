@@ -3,10 +3,11 @@ import { useRef, useState } from "react";
 import Input from "../components/Input";
 import { GrClose } from "react-icons/gr";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import authState from "../store/authState";
+import axiosInstance from "../utils/axiosInstance";
 
 const Signin = ({ toggleSignup, onClose }) => {
   const usernameRef = useRef(null);
@@ -33,7 +34,7 @@ const Signin = ({ toggleSignup, onClose }) => {
 
     try {
       //  sign in to get the token
-      const signinResponse = await axios.post(
+      const signinResponse = await axiosInstance.post(
         `${import.meta.env.VITE_API_URL}/api/v1/user/signin`,
         {
           username,
@@ -47,7 +48,7 @@ const Signin = ({ toggleSignup, onClose }) => {
         localStorage.setItem("token", token);
 
         //  fetch user details using the token
-        const userResponse = await axios.get(
+        const userResponse = await axiosInstance.get(
           `${import.meta.env.VITE_API_URL}/api/v1/user/me`,
           {
             headers: {

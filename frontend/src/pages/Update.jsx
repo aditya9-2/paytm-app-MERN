@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import Input from "../components/Input";
-import axios from "axios";
+
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
 
 const Update = () => {
   const firstNameRef = useRef();
@@ -53,7 +54,7 @@ const Update = () => {
         return;
       }
 
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         `${import.meta.env.VITE_API_URL}/api/v1/user/update`,
 
         updateData,
