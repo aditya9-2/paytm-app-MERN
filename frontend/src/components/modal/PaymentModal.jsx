@@ -5,7 +5,7 @@ import { GrClose } from "react-icons/gr";
 
 import PinModal from "./PinModal";
 import { useNavigate } from "react-router-dom";
-import axios from "../axios";
+import axios from "axios";
 
 const PaymentModal = ({ onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
