@@ -4,7 +4,7 @@ import Input from "../components/Input";
 import { GrClose } from "react-icons/gr";
 
 import { ToastContainer, toast } from "react-toastify";
-import axiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 const Signup = ({ toggleSignin, onClose }) => {
   const [error, setError] = useState(null);
@@ -52,7 +52,7 @@ const Signup = ({ toggleSignin, onClose }) => {
         return;
       }
 
-      const response = await axiosInstance.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/user/signup`,
         {
           username,

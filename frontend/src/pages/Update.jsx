@@ -3,7 +3,7 @@ import Input from "../components/Input";
 
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 const Update = () => {
   const firstNameRef = useRef();
@@ -54,7 +54,7 @@ const Update = () => {
         return;
       }
 
-      const response = await axiosInstance.put(
+      const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/api/v1/user/update`,
 
         updateData,

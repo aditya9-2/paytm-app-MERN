@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import WalletCard from "../components/WalletCard";
 import PaymentModal from "../components/modal/PaymentModal";
 
-import axiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,7 +13,7 @@ const Dashboard = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axiosInstance.get(
+        const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/v1/account/balance`,
           {
             headers: {

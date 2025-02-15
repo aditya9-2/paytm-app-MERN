@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import authState from "../store/authState";
-import axiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 const Signin = ({ toggleSignup, onClose }) => {
   const usernameRef = useRef(null);
@@ -34,7 +34,7 @@ const Signin = ({ toggleSignup, onClose }) => {
 
     try {
       //  sign in to get the token
-      const signinResponse = await axiosInstance.post(
+      const signinResponse = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/user/signin`,
         {
           username,
@@ -48,7 +48,7 @@ const Signin = ({ toggleSignup, onClose }) => {
         localStorage.setItem("token", token);
 
         //  fetch user details using the token
-        const userResponse = await axiosInstance.get(
+        const userResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/v1/user/me`,
           {
             headers: {
