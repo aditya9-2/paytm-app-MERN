@@ -41,12 +41,12 @@ const Profilebox = ({ lable }) => {
       {isHovered && (
         <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md overflow-hidden z-50">
           <ul className="flex flex-col text-black font-semibold">
-            <li
+            {/* <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => navigate("/update")}
             >
               Profile
-            </li>
+            </li> */}
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => navigate("/dashboard")}
