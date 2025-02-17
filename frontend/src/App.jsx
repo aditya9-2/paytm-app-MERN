@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import { Navigate, Outlet } from "react-router-dom";
-import Update from "./pages/Update";
+// import Update from "./pages/Update";
 import Success from "./pages/Success";
 import { RecoilRoot } from "recoil";
 import Failure from "./pages/Failure";
@@ -18,7 +18,7 @@ const App = () => {
           <Route path="/" element={<Landing />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/update" element={<Update />} />
+            {/* <Route path="/update" element={<Update />} /> */}
             <Route path="/success" element={<Success />} />
             <Route path="/fail" element={<Failure />} />
           </Route>
