@@ -27,9 +27,9 @@ const Profilebox = ({ lable }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setUser(null);
-    window.location.reload();
     navigate("/");
+    setUser(null);
+    // window.location.reload();
   };
 
   return (
