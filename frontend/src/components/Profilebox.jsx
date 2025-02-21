@@ -29,7 +29,6 @@ const Profilebox = ({ lable }) => {
     localStorage.removeItem("token");
     navigate("/");
     setUser(null);
-    // window.location.reload();
   };
 
   return (
