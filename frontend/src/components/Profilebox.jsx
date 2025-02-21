@@ -2,11 +2,14 @@
 import { useEffect, useRef, useState } from "react";
 import { nameSlicer } from "../helper/nameSlice";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import authState from "../store/authState";
 
 const Profilebox = ({ lable }) => {
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef(null);
   const navigate = useNavigate();
+  const setUser = useSetRecoilState(authState);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -24,6 +27,7 @@ const Profilebox = ({ lable }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setUser(null);
     window.location.reload();
     navigate("/");
   };
