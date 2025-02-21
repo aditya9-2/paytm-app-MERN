@@ -33,5 +33,5 @@ export default App;
 
 const ProtectedRoute = () => {
   const token = localStorage.getItem("token");
-  return token ? <Outlet /> : <Navigate to="/" />;
+  return token ? <Outlet /> : <Navigate to="/" replace />;
 };
