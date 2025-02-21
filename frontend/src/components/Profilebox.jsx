@@ -26,9 +26,9 @@ const Profilebox = ({ lable }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
     setUser(null);
+    localStorage.removeItem("token");
+    navigate("/", { replace: true });
   };
 
   return (
